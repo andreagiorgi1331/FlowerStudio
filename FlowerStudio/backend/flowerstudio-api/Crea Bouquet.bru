@@ -1,0 +1,22 @@
+meta {
+  name: Crea Bouquet
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/bouquets
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYXJpby5yb3NzaUBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc3Mjk5MjIyMCwiZXhwIjoxNzcyOTk1ODIwfQ.r4oVfjMT8kpanuwR4KEoHBSNaB7ymk7C3uU_51sfZyQ
+}
+
+body:json {
+  {
+    "name": "Bouquet Primaverile",
+    "description": "Un mix allegro di Tulipani gialli e Margherite bianche"
+  }
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Leggi i miei Bouquet
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:3000/bouquets
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYXJpby5yb3NzaUBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc3MzA2NTY2MSwiZXhwIjoxNzczMDY5MjYxfQ.-980R5Q9HTVRkz5LEzNT_9_3Hr3ZPO6qxk33Q7DSq7g
+}

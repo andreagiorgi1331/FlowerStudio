@@ -1,0 +1,22 @@
+meta {
+  name: Aggiungi fiore al Bouquet
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/bouquets/2/flowers
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYXJpby5yb3NzaUBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc3Mjk5NzkwMywiZXhwIjoxNzczMDAxNTAzfQ.H2ZwoShgZEt76tDPu0-UFLaTACnWSBHzL3owv-Apdmc
+}
+
+body:json {
+  {
+    "flowerId": 3, 
+    "quantity": 5
+  }
+}

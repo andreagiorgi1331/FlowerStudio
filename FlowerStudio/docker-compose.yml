@@ -1,0 +1,54 @@
+services:
+  # ==============================
+  # 1. DATABASE — PostgreSQL 15
+  # ==============================
+  db:
+    image: postgres:15-alpine
+    container_name: flowerstudio_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data       # Volume persistente per i dati
+      - ./db-init:/docker-entrypoint-initdb.d # Script di inizializzazione automatica
+    restart: always
+
+  # ==============================
+  # 2. BACKEND — Node.js + Express
+  # ==============================
+  backend:
+    build: ./backend
+    container_name: flowerstudio_backend
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      - PORT=${PORT:-3000}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=db                            # ← Nome del servizio Docker, NON localhost
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - BOT_NAME=${BOT_NAME:-Fleur}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    depends_on:
+      - db
+    restart: always
+
+  # ==============================
+  # 3. FRONTEND — React + NGINX
+  # ==============================
+  frontend:
+    build: ./frontend
+    container_name: flowerstudio_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  pgdata:
