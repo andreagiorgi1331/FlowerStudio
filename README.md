@@ -45,7 +45,8 @@ FlowerStudio/
 
 ### 1. Configurare le variabili d'ambiente
 
-Modificare il file `.env` con le credenziali reali:
+Modificare il file `.env` con le variabili inviate via mail e caricare il file nella cartella principale.
+Esempio env:
 
 ```env
 PORT=3000
@@ -60,7 +61,8 @@ GROQ_API_KEY=<la_propria_api_key_groq>
 
 ### 2. Avviare l'applicazione
 
-Un singolo comando costruisce e avvia tutto:
+Entrare in Docker Desktop, aprire il terminale e posizionarsi nella cartella del progetto.
+Per costruire le immagini e avviare tutti i servizi (Database + Backend), esegui il seguente comando:
 
 ```bash
 docker-compose up --build
@@ -105,8 +107,8 @@ docker-compose down -v
 
 - **Composizione Drag & Drop**: Trascina fiori e foglie su una tela interattiva.
 - **Personalizzazione**: Colore confezione, fiocco opzionale, ridimensionamento e specchiatura dei fiori.
-- **Anteprima in tempo reale**: Screenshot automatico del bouquet alla creazione.
-- **Community**: Condividi i tuoi bouquet con gli altri utenti.
-- **Catalogo Template**: Usa bouquet predefiniti come punto di partenza.
+- **Anteprima in tempo reale**: Screenshot automatico del bouquet al salvataggio.
+- **Community**: Condividi i tuoi bouquet con gli altri utenti pubblicandoli da "I Miei Mazzi".
+- **Catalogo Template**: Usa bouquet predefiniti nella pagina "Giardino" come punto di partenza.
 - **Chatbot AI (Fleur)**: Assistente virtuale per consigli sulla scelta dei fiori.
-- **Dashboard Admin**: Gestione globale dei bouquet e promozione a template.
+- **Dashboard Admin**: Gestione globale dei bouquet e promozione a template di bouquet creati dagli utenti.
