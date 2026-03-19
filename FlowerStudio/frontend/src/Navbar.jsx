@@ -31,7 +31,7 @@ function Navbar() {
           <>
             <Link to="/catalogo" style={linkStyle}>Giardino</Link>
             <Link to="/crea-bouquet" style={linkStyle}>Componi</Link>
-            <Link to="/i-miei-mazzi" style={linkStyle}>I Miei Mazzi</Link>
+            <Link to="/i-miei-mazzi" style={linkStyle}>I Miei Bouquet</Link>
             <Link to="/community" style={linkStyle}>Community</Link>
             
             {/* Link Admin visibile SOLO per gli admin */}

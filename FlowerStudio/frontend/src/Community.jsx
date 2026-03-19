@@ -38,7 +38,7 @@ function Community() {
         <div style={{ textAlign: 'center', color: '#888', marginTop: '3rem' }}>
           <p style={{ fontSize: '3rem', margin: '0 0 10px 0' }}></p>
           <p style={{ fontSize: '1.1rem' }}>Nessun bouquet è stato ancora condiviso.</p>
-          <p style={{ fontSize: '0.9rem' }}>Vai su "I Miei Mazzi" e pubblica il tuo primo bouquet!</p>
+          <p style={{ fontSize: '0.9rem' }}>Vai su "I Miei Bouquet" e pubblica il tuo primo bouquet!</p>
         </div>
       ) : (
         <div className="grid-cards" style={{ maxWidth: '1200px', margin: '0 auto' }}>

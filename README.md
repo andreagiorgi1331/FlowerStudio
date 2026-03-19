@@ -138,7 +138,7 @@ Nel rispetto delle regole d'esame, si dichiara quanto segue:
 - **Composizione Drag & Drop**: Trascina fiori e foglie su una tela interattiva.
 - **Personalizzazione**: Colore confezione, fiocco opzionale, ridimensionamento e specchiatura dei fiori.
 - **Anteprima in tempo reale**: Screenshot automatico del bouquet al salvataggio.
-- **Community**: Condividi i tuoi bouquet con gli altri utenti pubblicandoli da "I Miei Mazzi".
+- **Community**: Condividi i tuoi bouquet con gli altri utenti pubblicandoli da "I Miei Bouquet".
 - **Catalogo Template**: Usa bouquet predefiniti nella pagina "Giardino" come punto di partenza.
 - **Chatbot AI (Fleur)**: Assistente virtuale per consigli sulla scelta dei fiori.
 - **Dashboard Admin**: Gestione globale dei bouquet e promozione a template di bouquet creati dagli utenti.

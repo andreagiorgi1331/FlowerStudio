@@ -66,7 +66,7 @@ function MyBouquets() {
   return (
     <div className="page-container">
       <h2 style={{ color: '#4d6b53', borderBottom: '2px solid #EAF4A5', paddingBottom: '10px', display: 'inline-block' }}>
-        I Miei Mazzi 
+        I Miei Bouquet 
       </h2>
 
       {bouquets.length === 0 ? (
