@@ -5,13 +5,13 @@ L'utente può scegliere fiori da un catalogo, trascinarli su una tela, personali
 
 ---
 
-## 📐 Architettura
+## Architettura
 
 | Componente     | Tecnologia           | Porta  |
 | :------------- | :------------------- | :----: |
 | **Frontend**   | React (Vite) + NGINX |  `80`  |
 | **Backend**    | Node.js + Express    | `3000` |
-| **Database**   | PostgreSQL 15        | `5432` |
+| **Database**   | PostgreSQL 18        | `5432` |
 | **Chatbot AI** | Groq API (LLM)       |   —    |
 
 ```
@@ -38,7 +38,7 @@ FlowerStudio/
 
 ---
 
-## 🚀 Avvio Rapido (Docker)
+## Avvio Rapido (Docker)
 
 > **Non è necessario installare Node.js, npm o PostgreSQL sul proprio computer.**  
 > L'unico requisito è avere **[Docker Desktop](https://www.docker.com/products/docker-desktop/)** installato e in esecuzione.
@@ -92,7 +92,37 @@ Per eliminare anche i dati persistenti del database:
 docker-compose down -v
 ```
 
-## 🛡️ Sicurezza
+## Istruzioni di Test
+
+I test delle API REST sono stati configurati utilizzando **Bruno** (un'alternativa open-source a Postman).
+Nella cartella `backend/flowerstudio-api/` è presente la collection completa.
+
+1. Scarica e installa [Bruno](https://www.usebruno.com/).
+2. Apri Bruno e seleziona "Open Collection".
+3. Seleziona la cartella `backend/flowerstudio-api/`.
+4. Assicurati che l'applicazione sia in esecuzione tramite Docker e lancia le richieste preconfigurate (Creazione bouquet, Login, ecc.) per testare gli endpoint.
+
+---
+
+## Scelte Progettuali e Motivazioni Tecniche
+
+L'architettura dell'applicazione segue i principi **Cloud-Native**, rendendola facilmente scalabile e deployabile su qualsiasi provider cloud grazie alla containerizzazione.
+
+- **Frontend (React + Vite + NGINX):** Si è scelto React per la sua architettura a componenti, ideale per gestire un'interfaccia interattiva come la tela drag & drop dei fiori. NGINX è stato inserito nel Dockerfile in un processo multi-stage per servire i file statici compilati in modo estremamente leggero e performante, fungendo anche da reverse proxy.
+- **Backend (Node.js + Express):** Scelto per la sua natura asincrona (event-driven), perfetta per gestire le API RESTful e le chiamate di rete parallele (ad esempio verso il DB e l'API di Groq contemporaneamente).
+- **Database (PostgreSQL 18):** Si è optato per un database relazionale robusto per garantire l'integrità dei dati tra Utenti, Bouquet e Catalogo Fiori.
+- **Containerizzazione (Docker):** Garantisce che l'applicazione funzioni in modo identico sia nell'ambiente di sviluppo locale che in produzione, isolando le dipendenze di ogni servizio.
+
+---
+
+## Librerie Esterne e utilizzo AI
+
+Nel rispetto delle regole d'esame, si dichiara quanto segue:
+
+- **Servizi AI Esterni:** L'applicazione integra l'API pubblica di **Groq** per alimentare il Chatbot "Fleur" (presente nel file `chatController.js` e `chatService.js`). Il funzionamento dell'integrazione (tramite chiamate REST asincrone) è completamente compreso e documentato.
+- **Strumenti di Assistenza allo Sviluppo:** Durante la stesura del codice potrebbero essere stati impiegati strumenti di AI generativa (es. GitHub Copilot, ChatGPT) esclusivamente come supporto alla scrittura (ad esempio per boilerplate o formattazione CSS). Tutto il codice generato è stato revisionato, testato e compreso appieno dallo sviluppatore, e rispecchia l'architettura logica pensata per l'esame.
+
+## Sicurezza
 
 - **Autenticazione JWT**: Token firmato con chiave segreta configurabile.
 - **Hashing password**: Le password sono cifrate con `bcrypt` (salt round automatico).
@@ -101,7 +131,7 @@ docker-compose down -v
 
 ---
 
-## 🧩 Funzionalità Principali
+## Funzionalità Principali
 
 - **Composizione Drag & Drop**: Trascina fiori e foglie su una tela interattiva.
 - **Personalizzazione**: Colore confezione, fiocco opzionale, ridimensionamento e specchiatura dei fiori.

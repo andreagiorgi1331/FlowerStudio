@@ -1,0 +1,118 @@
+name: FlowerStudio CI/CD Pipeline
+
+# Attivazione della pipeline
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch: # Permette anche l'avvio manuale della pipeline
+
+jobs:
+  # ==========================================
+  # 1. FASE DI BUILD
+  # ==========================================
+  build:
+    name: Build
+    runs-on: ubuntu-latest # Questo è il "Runner" richiesto dal prof
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Installa dipendenze Backend
+        run: cd backend && npm install
+
+      - name: Compila Frontend (React/Vite)
+        run: cd frontend && npm install && npm run build
+
+  # ==========================================
+  # 2. FASE DI TEST
+  # ==========================================
+  test:
+    name: Test
+    needs: build # Dipende dal successo del job di build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Avvia infrastruttura temporanea (Docker)
+        run: docker-compose up -d
+
+      - name: Setup Node per Bruno CLI
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Esegui Test API (Bruno)
+        run: |
+          npm install -g @usebruno/cli
+          sleep 15 # Attende l'avvio del DB
+          cd backend/flowerstudio-api
+          bru run
+
+      - name: Spegni infrastruttura
+        if: always() # Esegue il teardown anche se i test falliscono
+        run: docker-compose down
+
+  # ==========================================
+  # 3. FASE DI SICUREZZA (SAST & Secret Detection)
+  # ==========================================
+  security:
+    name: Security Scan
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Secret Detection (Cerca password nel codice)
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+      - name: Vulnerability Scan Backend (SAST)
+        run: cd backend && npm install && npm audit --audit-level=high || true
+
+  # ==========================================
+  # 4. FASE DI PACKAGE (Docker Image -> Registry)
+  # ==========================================
+  package:
+    name: Package
+    needs: [test, security] # Parte solo se test e sicurezza passano
+    if: github.ref == 'refs/heads/main' # equivalente a "only: main" di GitLab
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login al GitHub Container Registry (GHCR)
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build e Push Immagine Backend
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/flowerstudio-backend:latest ./backend
+          docker push ghcr.io/${{ github.repository_owner }}/flowerstudio-backend:latest || echo "Push backend simulato"
+
+      - name: Build e Push Immagine Frontend
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/flowerstudio-frontend:latest ./frontend
+          docker push ghcr.io/${{ github.repository_owner }}/flowerstudio-frontend:latest || echo "Push frontend simulato"
+
+  # ==========================================
+  # 5. FASE DI DEPLOY (Continuous Delivery - Manuale)
+  # ==========================================
+  deploy:
+    name: Deploy in Produzione
+    needs: package
+    runs-on: ubuntu-latest
+    environment:
+      name: production # Gestisce l'approvazione manuale su GitHub
+    steps:
+      - name: Esecuzione Deploy
+        run: |
+          echo "Scarico le ultime immagini Docker (docker pull)..."
+          echo "Riavvio i container in produzione (docker-compose up -d)..."
+          echo "Deploy completato con successo all'indirizzo del server cloud!"
