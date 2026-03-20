@@ -3,7 +3,7 @@ const BouquetModel = require('../models/bouquetModel');
 
 const BouquetService = {
     // Funzione per gestire la logica di creazione
-    createBouquet: async (name, description, userId) => {
+    createBouquet: async (name, userId) => {
         try {
             // Regole di business: Controlliamo che i dati minimi ci siano
             if (!name) {
@@ -11,7 +11,7 @@ const BouquetService = {
             }
 
             // Chiamiamo il Model per salvare i dati nel database
-            const newBouquet = await BouquetModel.createBouquet(name, description, userId);
+            const newBouquet = await BouquetModel.createBouquet(name, userId);
             return newBouquet;
             
         } catch (error) {

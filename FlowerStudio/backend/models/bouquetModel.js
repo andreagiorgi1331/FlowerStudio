@@ -3,17 +3,17 @@ const pool = require('../config/db');
 
 const BouquetModel = {
     // Funzione per salvare un nuovo bouquet
-    createBouquet: async (name, description, userId) => {
+    createBouquet: async (name, userId) => {
         try {
-            // Usiamo sempre le query parametrizzate ($1, $2...) per la sicurezza!
-            // L'ultimo valore ($3) è fondamentale: collega il bouquet all'utente loggato.
+            // Usiamo sempre le query parametrizzate ($1, $2) per la sicurezza!
+            // L'ultimo valore ($2) è fondamentale: collega il bouquet all'utente loggato.
             const query = `
-                INSERT INTO bouquets (name, description, user_id) 
-                VALUES ($1, $2, $3) 
+                INSERT INTO bouquets (name, user_id) 
+                VALUES ($1, $2) 
                 RETURNING *;
             `;
             
-            const values = [name, description, userId];
+            const values = [name, userId];
             const result = await pool.query(query, values);
             
             // Restituiamo il bouquet appena salvato
@@ -91,14 +91,13 @@ const BouquetModel = {
             throw error;
         }
     },
-    // 6. Cerca template per evento/stile
-    getBouquetsByStyle: async (style) => {
+    // 6. Ottieni i bouquet template
+    getBouquetTemplates: async () => {
         try {
-            // Usiamo ILIKE per una ricerca flessibile e uniamo le tabelle 
-            // per far vedere a Fleur anche quali fiori ci sono dentro!
+            // Troviamo i bouquet che sono template e mostriamo i fiori al loro interno
             const query = `
                 SELECT 
-                    b.id, b.name, b.style, b.created_at,
+                    b.id, b.name, b.wrapper, b.has_ribbon, b.ribbon_color, b.created_at,
                     COALESCE(
                         json_agg(
                             json_build_object(
@@ -111,16 +110,15 @@ const BouquetModel = {
                 FROM bouquets b
                 LEFT JOIN bouquet_items bf ON b.id = bf.bouquet_id
                 LEFT JOIN flowers f ON bf.flower_id = f.id
-                WHERE b.style ILIKE $1
+                WHERE b.is_template = true
                 GROUP BY b.id
                 ORDER BY b.created_at DESC;
             `;
             
-            // I simboli % dicono a Postgres di cercare la parola ovunque (es. "Matrimonio elegante")
-            const result = await pool.query(query, [`%${style}%`]);
+            const result = await pool.query(query);
             return result.rows;
         } catch (error) {
-            console.error('Errore nel DAO durante la ricerca per stile:', error);
+            console.error('Errore nel DAO durante la ricerca dei template:', error);
             throw error;
         }
     }

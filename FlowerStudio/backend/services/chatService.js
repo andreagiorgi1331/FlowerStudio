@@ -44,17 +44,11 @@ const ChatService = {
                 {
                     type: "function",
                     function: {
-                        name: "get_templates_by_event",
-                        description: "Cerca nel database i bouquet predefiniti (template) adatti a un evento o stile specifico (es. 'Matrimonio', 'Laurea', 'Romantico').",
+                        name: "get_bouquet_templates",
+                        description: "Ottiene dal database la lista di tutti i bouquet predefiniti (template). Usalo per fornire all'utente esempi, ispirazione o consigli di bouquet preesistenti.",
                         parameters: { 
                             type: "object", 
-                            properties: {
-                                event: {
-                                    type: "string",
-                                    description: "L'evento o lo stile richiesto dall'utente (es. matrimonio, laurea, compleanno)."
-                                }
-                            }, 
-                            required: ["event"],
+                            properties: {}, 
                             additionalProperties: false 
                         }
                     }
@@ -117,17 +111,12 @@ const ChatService = {
                         }
                     }
                     // STRUMENTO 3: Suggeritore di Template
-                    if (toolCall.function.name === "get_templates_by_event") {
+                    if (toolCall.function.name === "get_bouquet_templates") {
                         console.log(" Fleur sta cercando i template...");
                         
-                        // A differenza degli altri, qui dobbiamo LEGGERE l'argomento (la parola chiave)
-                        // che l'Intelligenza Artificiale ha deciso di cercare!
-                        const args = JSON.parse(toolCall.function.arguments);
-                        const eventStyle = args.event;
-                        
                         let templates = [];
-                        if (BouquetModel.getBouquetsByStyle) {
-                            templates = await BouquetModel.getBouquetsByStyle(eventStyle);
+                        if (BouquetModel.getBouquetTemplates) {
+                            templates = await BouquetModel.getBouquetTemplates();
                         } else {
                             templates = [{ errore: "Ricerca template non disponibile." }];
                         }
@@ -135,7 +124,7 @@ const ChatService = {
                         messages.push({
                             tool_call_id: toolCall.id,
                             role: "tool",
-                            name: "get_templates_by_event",
+                            name: "get_bouquet_templates",
                             content: JSON.stringify(templates)
                         });
                     }
