@@ -1,0 +1,21 @@
+meta {
+  name: Toggle Pubblico
+  type: http
+  seq: 9
+}
+
+put {
+  url: http://localhost:3000/bouquets/42/toggle-public
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "is_public": true
+  }
+}

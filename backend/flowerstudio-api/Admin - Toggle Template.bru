@@ -1,0 +1,21 @@
+meta {
+  name: Admin - Toggle Template
+  type: http
+  seq: 14
+}
+
+put {
+  url: http://localhost:3000/bouquets/42/toggle-template
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "is_template": true
+  }
+}

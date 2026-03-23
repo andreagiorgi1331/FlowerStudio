@@ -1,0 +1,20 @@
+meta {
+  name: Registra Utente
+  type: http
+  seq: 0
+}
+
+post {
+  url: http://localhost:3000/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "test.utente@example.com",
+    "password": "password123",
+    "nome": "Test",
+    "cognome": "Utente"
+  }
+}

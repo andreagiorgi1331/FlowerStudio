@@ -1,0 +1,59 @@
+meta {
+  name: Aggiorna Bouquet
+  type: http
+  seq: 7
+}
+
+put {
+  url: http://localhost:3000/bouquets/42
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Bouquet Primaverile Aggiornato",
+    "wrapper": "#e8a0bf",
+    "has_ribbon": true,
+    "ribbon_color": "#c71585",
+    "preview_image": null,
+    "flowers": [
+      {
+        "id": 1,
+        "x": 220,
+        "y": 90,
+        "scale": 1.5,
+        "z_index": 9,
+        "is_flipped": false
+      },
+      {
+        "id": 5,
+        "x": 280,
+        "y": 130,
+        "scale": 1.0,
+        "z_index": 10,
+        "is_flipped": true
+      },
+      {
+        "id": 9,
+        "x": 250,
+        "y": 170,
+        "scale": 0.7,
+        "z_index": 11,
+        "is_flipped": false
+      },
+      {
+        "id": 2,
+        "x": 310,
+        "y": 100,
+        "scale": 0.9,
+        "z_index": 8,
+        "is_flipped": false
+      }
+    ]
+  }
+}
