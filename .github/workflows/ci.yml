@@ -39,7 +39,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # Aggiungi questo step appena prima di "docker compose up -d"
       - name: Crea file .env dai GitHub Secrets
         run: |
           echo "PORT=3000" >> .env
@@ -50,8 +49,6 @@ jobs:
           echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
           echo "BOT_NAME=Fleur" >> .env
 
-      - name: Avvia infrastruttura temporanea (Docker)
-        run: docker compose up -d
       - name: Avvia infrastruttura temporanea (Docker)
         run: docker compose up -d
 
