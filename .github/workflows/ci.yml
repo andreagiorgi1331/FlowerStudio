@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: Installa dipendenze Backend
         run: cd backend && npm install
@@ -46,7 +46,7 @@ jobs:
       - name: Setup Node per Bruno CLI
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: Esegui Test API (Bruno)
         run: |
