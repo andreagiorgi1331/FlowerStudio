@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 function AdminDashboard() {
   const [bouquets, setBouquets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +15,7 @@ function AdminDashboard() {
   const fetchAllBouquets = async () => {
     try {
       const token = localStorage.getItem('flower_token');
-      const response = await axios.get('http://localhost:3000/bouquets/admin/all', {
+      const response = await axios.get(`${API_URL}/bouquets/admin/all`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBouquets(response.data);
@@ -29,7 +31,7 @@ function AdminDashboard() {
 
     try {
       const token = localStorage.getItem('flower_token');
-      await axios.delete(`http://localhost:3000/bouquets/admin/${id}`, {
+      await axios.delete(`${API_URL}/bouquets/admin/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBouquets(bouquets.filter(b => b.id !== id));
@@ -44,7 +46,7 @@ function AdminDashboard() {
   const handleToggleTemplate = async (id, currentStatus) => {
     try {
       const token = localStorage.getItem('flower_token');
-      await axios.put(`http://localhost:3000/bouquets/${id}/toggle-template`, 
+      await axios.put(`${API_URL}/bouquets/${id}/toggle-template`, 
         { is_template: !currentStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

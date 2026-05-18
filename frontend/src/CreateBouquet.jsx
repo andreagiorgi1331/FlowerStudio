@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { toPng } from 'html-to-image';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 function CreateBouquet() {
   const [availableFlowers, setAvailableFlowers] = useState([]);
   const [bouquetFlowers, setBouquetFlowers] = useState([]); 
@@ -35,7 +37,7 @@ function CreateBouquet() {
       const fetchEditData = async () => {
         try {
           const token = localStorage.getItem('flower_token');
-          const response = await axios.get(`http://localhost:3000/bouquets/${editId}`, {
+          const response = await axios.get(`${API_URL}/bouquets/${editId}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           
@@ -65,7 +67,7 @@ function CreateBouquet() {
   useEffect(() => {
     const fetchFlowers = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/flowers');
+        const response = await axios.get(`${API_URL}/flowers`);
         setAvailableFlowers(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -189,14 +191,14 @@ function CreateBouquet() {
       };
 
       if (editId) {
-        await axios.put(`http://localhost:3000/bouquets/${editId}`, payload, {
+        await axios.put(`${API_URL}/bouquets/${editId}`, payload, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setMessage(' Bouquet aggiornato con successo!');
         setTimeout(() => navigate('/i-miei-mazzi'), 1500); 
         
       } else {
-        await axios.post('http://localhost:3000/bouquets', payload, {
+        await axios.post(`${API_URL}/bouquets`, payload, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setMessage(' Bouquet salvato nel tuo Giardino!');

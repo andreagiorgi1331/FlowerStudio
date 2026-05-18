@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 function MyBouquets() {
   const [bouquets, setBouquets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +17,7 @@ function MyBouquets() {
   const fetchMyBouquets = async () => {
     try {
       const token = localStorage.getItem('flower_token');
-      const response = await axios.get('http://localhost:3000/bouquets', {
+      const response = await axios.get(`${API_URL}/bouquets`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBouquets(response.data);
@@ -31,7 +33,7 @@ function MyBouquets() {
 
     try {
       const token = localStorage.getItem('flower_token');
-      await axios.delete(`http://localhost:3000/bouquets/${id}`, {
+      await axios.delete(`${API_URL}/bouquets/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Aggiorniamo la lista rimuovendo quello cancellato
@@ -49,7 +51,7 @@ function MyBouquets() {
   const handleTogglePublic = async (id, currentStatus) => {
     try {
       const token = localStorage.getItem('flower_token');
-      await axios.put(`http://localhost:3000/bouquets/${id}/toggle-public`, 
+      await axios.put(`${API_URL}/bouquets/${id}/toggle-public`, 
         { is_public: !currentStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

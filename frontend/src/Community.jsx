@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 function Community() {
   const [bouquets, setBouquets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +15,7 @@ function Community() {
   const fetchPublicBouquets = async () => {
     try {
       const token = localStorage.getItem('flower_token');
-      const response = await axios.get('http://localhost:3000/bouquets/community/public', {
+      const response = await axios.get(`${API_URL}/bouquets/community/public`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBouquets(response.data);

@@ -34,6 +34,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - BOT_NAME=${BOT_NAME:-Fleur}
       - GROQ_API_KEY=${GROQ_API_KEY}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost}
     depends_on:
       - db
     restart: always

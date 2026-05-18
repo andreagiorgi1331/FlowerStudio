@@ -11,6 +11,12 @@ RUN npm install
 
 # Copia il resto del codice sorgente e compila
 COPY . .
+
+# Variabile d'ambiente per l'URL del backend (iniettata al build)
+# In Docker, il frontend usa /api che NGINX inoltra al container backend
+ARG VITE_API_URL=/api
+ENV VITE_API_URL=$VITE_API_URL
+
 RUN npm run build
 
 # ============================================================

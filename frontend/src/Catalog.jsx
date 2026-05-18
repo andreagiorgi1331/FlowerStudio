@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 // --- COMPONENTE MINI-TELA (Ora usa la fotografia Base64!) ---
 const BouquetPreview = ({ bouquet, onZoom }) => {
   return (
@@ -39,7 +41,7 @@ function Catalog() {
     const fetchTemplates = async () => {
       try {
         const token = localStorage.getItem('flower_token');
-        const response = await axios.get('http://localhost:3000/bouquets/catalog/templates', {
+        const response = await axios.get(`${API_URL}/bouquets/catalog/templates`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setTemplates(response.data);
@@ -67,7 +69,7 @@ function Catalog() {
       </div>
 
       {templates.length === 0 ? (
-        <p style={{ textAlign: 'center', color: '#888' }}>Non ci sono ancora template disponibili. (Crea un bouquet e metti is_template=true nel database!)</p>
+        <p style={{ textAlign: 'center', color: '#888' }}>Non ci sono ancora template disponibili.</p>
       ) : (
         <div className="grid-cards" style={{ maxWidth: '1200px', margin: '0 auto' }}>
           

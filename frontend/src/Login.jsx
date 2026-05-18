@@ -2,6 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,8 +21,8 @@ function Login() {
 
     try {
       const url = isLoginMode 
-        ? 'http://localhost:3000/auth/login' 
-        : 'http://localhost:3000/auth/register';
+        ? `${API_URL}/auth/login` 
+        : `${API_URL}/auth/register`;
 
       // NOTA: Se il tuo backend non si aspetta 'nome' e 'cognome', li ignorerà, 
       // ma è bene inviarli se deciderai di salvarli nel database in futuro!

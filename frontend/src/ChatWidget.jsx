@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -26,7 +28,7 @@ function ChatWidget() {
 
     try {
       const token = localStorage.getItem('flower_token');
-      const response = await axios.post('http://localhost:3000/chat', 
+      const response = await axios.post(`${API_URL}/chat`, 
         { message: input },
         { headers: { Authorization: `Bearer ${token}` } }
       );
