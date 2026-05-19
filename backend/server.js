@@ -12,7 +12,7 @@ const bouquetRoutes = require('./routes/bouquetRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const app = express();
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*',
+  origin: process.env.FRONTEND_URL,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { toPng } from 'html-to-image';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function CreateBouquet() {
   const [availableFlowers, setAvailableFlowers] = useState([]);
