@@ -1,7 +1,7 @@
 # ============================================================
 # FASE 1: BUILD — Compilazione dell'app React con Vite
 # ============================================================
-FROM node:20-alpine AS build
+FROM node:24-alpine AS build
 
 WORKDIR /app
 
