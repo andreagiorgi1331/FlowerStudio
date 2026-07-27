@@ -46,8 +46,9 @@ function ChatWidget() {
       {/* BOTTONE FLOTTANTE PER APRIRE/CHIUDERE */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        className="chat-widget-button"
         style={{
-          position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000,
+          position: 'fixed', zIndex: 1000,
           width: '60px', height: '60px', borderRadius: '50%',
           backgroundColor: '#4d6b53', color: 'white',
           border: 'none', cursor: 'pointer',
@@ -63,17 +64,20 @@ function ChatWidget() {
 
       {/* FINESTRA CHAT POP-UP */}
       {isOpen && (
-        <div style={{
-          position: 'fixed', bottom: '90px', right: '20px', zIndex: 999,
-          width: '380px', maxWidth: 'calc(100vw - 40px)',
-          height: '500px', maxHeight: 'calc(100vh - 140px)',
-          borderRadius: '16px',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
-          display: 'flex', flexDirection: 'column',
-          overflow: 'hidden',
-          fontFamily: 'sans-serif',
-          animation: 'chatSlideUp 0.3s ease-out',
-        }}>
+        <div 
+          className="chat-widget-window"
+          style={{
+            position: 'fixed', zIndex: 999,
+            width: '380px', maxWidth: 'calc(100vw - 30px)',
+            height: '500px', maxHeight: 'calc(100vh - 140px)',
+            borderRadius: '16px',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
+            display: 'flex', flexDirection: 'column',
+            overflow: 'hidden',
+            fontFamily: 'sans-serif',
+            animation: 'chatSlideUp 0.3s ease-out',
+          }}
+        >
 
           {/* Header */}
           <div style={{ 
