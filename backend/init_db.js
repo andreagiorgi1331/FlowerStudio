@@ -2,18 +2,19 @@ const pool = require('./config/db');
 
 /**
  * Funzione per testare la connessione al DB con gestione dei tentativi (Retry).
- * Aspetta che il container Postgres di Docker sia pronto.
+ * Utile sia in ambiente locale/Docker (in attesa dell'avvio del container PostgreSQL)
+ * che in cloud.
  */
 const initDatabase = async (retries = 5, delay = 3000) => {
     while (retries > 0) {
         try {
             console.log(`⏳ Tentativo di connessione al database (${retries} tentativi rimasti)...`);
             
-            // Facciamo solo un piccolo "Ping" per vedere se Postgres è sveglio
+            // Ping di verifica per accertarsi che PostgreSQL sia pronto a ricevere query
             await pool.query('SELECT 1');
             
-            console.log('✅ Connessione stabilita! Il database Docker è pronto.');
-            return; // Uscita dal loop se tutto ok, le tabelle le ha già fatte Docker!
+            console.log('✅ Connessione stabilita! Il database è pronto.');
+            return;
 
         } catch (error) {
             retries--;
@@ -21,7 +22,7 @@ const initDatabase = async (retries = 5, delay = 3000) => {
                 console.error('❌ Database non raggiungibile dopo diversi tentativi:', error);
                 throw error;
             }
-            console.log(`📴 DB non ancora pronto. Riprovo in ${delay/1000} secondi...`);
+            console.log(`📴 DB non ancora pronto. Riprovo in ${delay / 1000} secondi...`);
             await new Promise(res => setTimeout(res, delay));
         }
     }

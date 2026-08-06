@@ -1,28 +1,38 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// Creiamo un "Pool" di connessioni usando i dati segreti del file .env
-const pool = new Pool({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    database: process.env.DB_NAME,
-    ssl: process.env.DB_HOST !== 'localhost' && process.env.DB_HOST !== '127.0.0.1'
-        ? { rejectUnauthorized: false }
-        : false,
-});
+const isProduction = process.env.NODE_ENV === 'production';
+const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
 
-// Testiamo subito la connessione!
+// SSL viene abilitato solo se ci troviamo in ambiente di produzione (es. Vercel)
+// oppure se è definita la stringa DATABASE_URL di Supabase in cloud.
+const useSSL = isProduction || hasDatabaseUrl;
+const sslOption = useSSL ? { rejectUnauthorized: false } : false;
+
+const poolConfig = hasDatabaseUrl
+    ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: sslOption,
+      }
+    : {
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        database: process.env.DB_NAME,
+        ssl: sslOption,
+      };
+
+const pool = new Pool(poolConfig);
+
+// Test di verifica della connessione al Pool
 pool.connect((err, client, release) => {
     if (err) {
-        console.error(' Errore di connessione al database:', err.stack);
+        console.error('❌ Errore di connessione al database:', err.stack);
     } else {
-        console.log(' Connesso con successo al database FlowerStudio!');
+        console.log('✅ Connesso con successo al database FlowerStudio!');
     }
-    // Rilasciamo il client per le prossime richieste
     if (client) release();
 });
 
-// Esportiamo la connessione per usarla in altre parti del progetto
 module.exports = pool;
